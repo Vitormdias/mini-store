@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  product-service:
+    container_name: 'product-service'
+    image: 'product-service'
+    build:
+      context: ./ProductService
+      dockerfile: ProductService.API/Dockerfile
+    depends_on:
+     - "postgres"
+    ports:
+      - "5000:80"
+    networks:
+      - product-service-network
+  postgres:
+    container_name: 'postgres'
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+    networks:
+      - product-service-network
+
+networks:
+  product-service-network:
+    driver: bridge
